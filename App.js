@@ -1,9 +1,9 @@
 import React from "react";
 
-import SchermataAccount from "./app/screens/SchermataAccount";
+import SchermataLogin from "./app/screens/SchermataLogin";
 
 export default function App () {
 
-    return <SchermataAccount />;
+    return <SchermataLogin />;
 
 }

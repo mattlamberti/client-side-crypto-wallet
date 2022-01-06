@@ -13,8 +13,8 @@ function WelcomeScreen () {
                 <Text style = {styles.tagline}>CryptoWallet</Text>
             </View>
             <View style = {styles.buttonsContainer}>
-                <AppButton title = "Accedi" />
-                <AppButton title = "Registrati" color = "nero" />
+                <AppButton titolo = "Accedi" />
+                <AppButton titolo = "Registrati" color = "nero" />
             </View>
         </ImageBackground>
   );
