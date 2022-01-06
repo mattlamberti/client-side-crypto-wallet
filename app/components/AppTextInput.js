@@ -31,7 +31,8 @@ const styles = StyleSheet.create ({
     },
     icona: {
 
-        marginRight: 10
+        marginRight: 10,
+        alignSelf: "center"
 
     }
 
