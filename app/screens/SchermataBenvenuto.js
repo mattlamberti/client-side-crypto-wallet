@@ -1,20 +1,21 @@
 import React from "react";
-import { ImageBackground, StyleSheet, View, Image, Text } from "react-native"
+import { ImageBackground, StyleSheet, View, Image, Text } from "react-native";
 
 import AppButton from "../components/AppButton";
+import routes from "../navigation/routes";
 
-function WelcomeScreen () {
+function WelcomeScreen ({ navigation }) {
 
     return (
 
-        <ImageBackground blurRadius = {10} style = {styles.background} source = {require ("../assets/background.jpg")}>
+        <ImageBackground blurRadius = {7} style = {styles.background} source = {require ("../assets/background.jpg")}>
             <View style = {styles.logoContainer}>
                 <Image style = {styles.logo} source = {require ("../assets/logo-bitcoin.png")} />
                 <Text style = {styles.tagline}>CryptoWallet</Text>
             </View>
             <View style = {styles.buttonsContainer}>
-                <AppButton titolo = "Accedi" />
-                <AppButton titolo = "Registrati" color = "nero" />
+                <AppButton titolo = "Accedi" onPress = {() => navigation.navigate (routes.ACCEDI)} />
+                <AppButton titolo = "Registrati" color = "nero" onPress = {() => navigation.navigate (routes.REGISTRATI)} />
             </View>
         </ImageBackground>
   );

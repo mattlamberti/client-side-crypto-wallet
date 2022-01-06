@@ -1,9 +1,17 @@
 import React from "react";
+import { NavigationContainer } from "@react-navigation/native";
 
-import SchermataRegistrazione from "./app/screens/SchermataRegistrazione";
+import navigationTheme from "./app/navigation/temaNavigazione";
+import NavigatoreAutenticazione from "./app/navigation/NavigatoreAutenticazione";
 
 export default function App () {
 
-    return <SchermataRegistrazione />;
+    return (
+
+        <NavigationContainer theme = {navigationTheme}>
+            <NavigatoreAutenticazione />
+        </NavigationContainer>
+
+    );
 
 }

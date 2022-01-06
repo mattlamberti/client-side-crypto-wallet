@@ -4,6 +4,7 @@ import * as Yup from "yup";
 
 import Screen from "../components/Screen";
 import { AppForm, AppFormField, PulsanteSubmit } from "../components/forms";
+import colori from "../config/colori";
 
 const schemaValidazione = Yup.object ().shape ({
 
@@ -34,6 +35,7 @@ const styles = StyleSheet.create ({
 
     container: {
 
+        backgroundColor: colori.bianco,
         padding: 10
 
     }
