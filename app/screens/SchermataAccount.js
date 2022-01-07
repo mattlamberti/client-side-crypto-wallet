@@ -6,6 +6,7 @@ import Lista from "../components/liste/Lista";
 import SeparatoreItemLista from "../components/liste/SeparatoreItemLista";
 import colori from "../config/colori";
 import Icona from "../components/Icona";
+import useAuth from "../auth/useAuth";
 
 const menuItems = [
 
@@ -35,18 +36,20 @@ const menuItems = [
 
 function SchermataAccount () {
 
+    const { utente, esci } = useAuth ();
+
     return (
 
         <Screen style = {styles.screen}>
             <View style = {styles.container}>
-                <Lista titolo = "Mattia Lamberti" sottotitolo = "matt.lamberti@studenti.unina.it" immagine = {require ("../assets/immagine.jpg")} />
+                <Lista titolo = {utente.nome} sottotitolo = {utente.email} immagine = {require ("../assets/immagine.jpg")} />
             </View>
             <View style = {styles.container}>
                 <FlatList data = {menuItems} keyExtractor = {(menuItem) => menuItem.titolo} ItemSeparatorComponent = {SeparatoreItemLista} renderItem = {({ item }) => (
                     <Lista titolo = {item.titolo} ComponenteIcona = {<Icona nome = {item.icona.nome} backgroundColor = {item.icona.backgroundColor} />} />
                 )} />
             </View>
-            <Lista titolo = "Esci" ComponenteIcona = {<Icona nome = "logout" backgroundColor = "#ffe66d" />} />
+            <Lista titolo = "Esci" onPress = {() => esci ()} ComponenteIcona = {<Icona nome = "logout" backgroundColor = "#ffe66d" />} />
         </Screen>
 
     );

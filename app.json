@@ -6,9 +6,9 @@
     "orientation": "portrait",
     "icon": "./app/assets/icon.png",
     "splash": {
-      "image": "./app/assets/splash.png",
+      "image": "./app/assets/logo-bitcoin.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#ff9416"
     },
     "updates": {
       "fallbackToCacheTimeout": 0

@@ -4,7 +4,7 @@ import { ImageBackground, StyleSheet, View, Image, Text } from "react-native";
 import AppButton from "../components/AppButton";
 import routes from "../navigation/routes";
 
-function WelcomeScreen ({ navigation }) {
+function SchermataBenvenuto ({ navigation }) {
 
     return (
 
@@ -59,4 +59,4 @@ const styles = StyleSheet.create ({
 
 });
 
-export default WelcomeScreen;
+export default SchermataBenvenuto;
