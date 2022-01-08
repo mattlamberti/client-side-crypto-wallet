@@ -1,9 +1,8 @@
 export default Object.freeze ({
 
     LISTING_DETAILS: "ListingDetails",
-    LISTING_EDIT: "ListingEdit",
+    AGGIUNGI_CRYPTO: "Aggiungi crypto",
     ACCEDI: "Accedi",
-    MESSAGES: "Messages",
     REGISTRATI: "Registrati"
 
 });

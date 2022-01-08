@@ -22,7 +22,9 @@ export default function App () {
     };
 
     if (!pronto) return (<AppLoading startAsync = {ripristinaUtente} onError = {(error) => console.log (error)} onFinish = {() => setPronto (true)} />);
-  
+
+    console.log (utente);
+
     return (
 
         <AuthContext.Provider value = {{ utente, setUtente }}>

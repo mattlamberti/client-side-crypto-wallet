@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet } from "react-native";
 import * as Yup from "yup";
 
-import { AppForm, AppFormField, PulsanteSubmit } from "../components/forms";
+import apiCrypto from "../api/crypto";
+import apiWallet from "../api/wallet";
+import authStorage from "../auth/storage";
+import { AppForm, AppFormField, MessaggioErrore, PulsanteSubmit } from "../components/forms";
 import Screen from "../components/Screen";
+import SchermataUploadCrypto from "./SchermataUploadCrypto";
 
 const schemaValidazione = Yup.object ().shape ({
 
@@ -15,10 +19,60 @@ const schemaValidazione = Yup.object ().shape ({
 
 function SchermataAggiuntaCrypto () {
 
+    const [uploadVisibile, setUploadVisibile] = useState (false);
+    const [progresso, setProgresso] = useState (0);
+    const [errore, setErrore] = useState (false);
+
+    const gestisciSubmit = async ({ crypto, quantita, prezzo }, { resetForm }) => {
+
+        setProgresso (0);
+        setUploadVisibile (true);
+
+        const risposta = await apiCrypto.crypto (crypto);
+
+        if (!risposta.ok) {
+
+            setErrore (true);
+
+        } else {
+
+            setErrore (false);
+
+            const { _id } = await authStorage.leggiUtente ();
+
+            let body = {
+
+                utente: _id,
+                nome: risposta.data ["data"][Object.keys (risposta.data ["data"])[0]]["name"],
+                simbolo: risposta.data ["data"][Object.keys (risposta.data ["data"])[0]]["symbol"],
+                quantita,
+                prezzoPerUnita: prezzo
+
+            }
+
+            const risultato = await apiWallet.aggiungiCrypto (body, (progresso) => setProgresso (progresso));
+
+            console.log (risultato);
+
+            if (!risultato.ok) {
+
+                setUploadVisibile (false);
+                return alert ("Impossibile aggiungere la crypto al wallet.");
+
+            }
+            
+            resetForm ();
+
+        }
+
+    };
+
     return (
 
         <Screen style = {styles.container}>
-            <AppForm valoriIniziali = {{ crypto: "", prezzo: "", quantita: "" }} onSubmit = {() => console.log ("Aggiunta Crypto")} validationSchema = {schemaValidazione}>
+            <SchermataUploadCrypto gestisciFineAnimazione = {() => setUploadVisibile (false)} progresso = {progresso} visibile = {uploadVisibile} />
+            <AppForm valoriIniziali = {{ crypto: "", prezzo: "", quantita: "" }} onSubmit = {gestisciSubmit} validationSchema = {schemaValidazione}>
+                <MessaggioErrore errore = "Crypto non trovata. Riprova." visibile = {errore} />
                 <AppFormField maxLength = {255} icona = "bitcoin" nome = "crypto" placeholder = "Crypto" />
                 <AppFormField keyboardType = "numeric" maxLength = {7} icona = "cash" nome = "prezzo" placeholder = "Prezzo per unità" />
                 <AppFormField keyboardType = "numeric" maxLength = {13} icona = "plus" nome = "quantita" placeholder = "Quantità" width = {170} />
