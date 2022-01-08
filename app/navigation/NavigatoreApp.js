@@ -1,14 +1,14 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 
-import SchermataAccount from "../screens/SchermataAccount";
+import SchermataAggiuntaCrypto from "../screens/SchermataAggiuntaCrypto";
 
 const Stack = createStackNavigator ();
 
 const NavigatoreApp = () => (
 
     <Stack.Navigator>
-        <Stack.Screen name = "Account" component = {SchermataAccount} options = {{ headerShown: false }} />
+        <Stack.Screen name = "Aggiungi Crypto" component = {SchermataAggiuntaCrypto} options = {{ headerShown: false }} />
     </Stack.Navigator>
 
 );

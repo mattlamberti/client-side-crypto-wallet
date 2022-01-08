@@ -9,7 +9,7 @@ function IndicatoreAttivita ({ visibile = false }) {
     return (
   
         <View style = {styles.copertura}>
-            <LottieView autoPlay loop source = {require ("../assets/animations/loader.json")} />
+            <LottieView autoPlay loop source = {require ("../assets/animations/caricamento.json")} />
         </View>
 
     );
