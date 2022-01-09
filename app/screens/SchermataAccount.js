@@ -15,7 +15,7 @@ function SchermataAccount () {
 
         <Screen style = {styles.screen}>
             <View style = {styles.container}>
-                <Lista titolo = {utente.nome} sottotitolo = {utente.email} immagine = {require ("../assets/logo-bitcoin.png")} />
+                <Lista titolo = {utente.nome} sottotitolo = {utente.email} immagine = {"http://www.mito.unina.it/wp-content/uploads/2014/05/logo-UNINA.png"} />
             </View>
             <Lista titolo = "Esci" onPress = {() => esci ()} ComponenteIcona = {<Icona nome = "logout" backgroundColor = "#ffe66d" />} />
         </Screen>
@@ -33,6 +33,7 @@ const styles = StyleSheet.create ({
     },
     container: {
 
+        marginTop: 0,
         marginVertical: 20
 
     }

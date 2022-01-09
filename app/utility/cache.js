@@ -53,7 +53,7 @@ const leggi = async (chiave) => {
 
     } catch (error) {
 
-        console.log (error);
+        console.log ("ERRORE: " + error);
 
     }
 

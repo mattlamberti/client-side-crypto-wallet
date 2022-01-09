@@ -1,7 +1,7 @@
 export default {
 
     primario: "#ff9416",
-    secondario: "#4ecdc4",
+    secondario: "#ff9417",
     nero: "#000",
     bianco: "#fff",
     soft: "#6e6969",

@@ -32,6 +32,7 @@ function SchermataAggiuntaCrypto () {
 
         if (!risposta.ok) {
 
+            setUploadVisibile (false);
             setErrore (true);
 
         } else {
@@ -52,9 +53,14 @@ function SchermataAggiuntaCrypto () {
 
             const risultato = await apiWallet.aggiungiCrypto (body, (progresso) => setProgresso (progresso));
 
-            console.log (risultato);
-
             if (!risultato.ok) {
+
+                if (risultato.status === 403) {
+
+                    setUploadVisibile (false);
+                    return alert ("L'utente selezionato ha già questa criptovaluta in portafoglio.");
+
+                }
 
                 setUploadVisibile (false);
                 return alert ("Impossibile aggiungere la crypto al wallet.");
@@ -73,7 +79,7 @@ function SchermataAggiuntaCrypto () {
             <SchermataUploadCrypto gestisciFineAnimazione = {() => setUploadVisibile (false)} progresso = {progresso} visibile = {uploadVisibile} />
             <AppForm valoriIniziali = {{ crypto: "", prezzo: "", quantita: "" }} onSubmit = {gestisciSubmit} validationSchema = {schemaValidazione}>
                 <MessaggioErrore errore = "Crypto non trovata. Riprova." visibile = {errore} />
-                <AppFormField maxLength = {255} icona = "bitcoin" nome = "crypto" placeholder = "Crypto" />
+                <AppFormField maxLength = {255} icona = "bitcoin" nome = "crypto" placeholder = "Crypto (simbolo)" />
                 <AppFormField keyboardType = "numeric" maxLength = {7} icona = "cash" nome = "prezzo" placeholder = "Prezzo per unità" />
                 <AppFormField keyboardType = "numeric" maxLength = {13} icona = "plus" nome = "quantita" placeholder = "Quantità" width = {170} />
                 <PulsanteSubmit titolo = "Aggiungi crypto" />

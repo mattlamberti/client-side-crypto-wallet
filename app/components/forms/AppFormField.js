@@ -6,12 +6,12 @@ import MessaggioErrore from "./MessaggioErrore";
 
 function AppFormField ({ nome, ...altreProps }) {
 
-    const { setFieldTouched, handleChange, errors, touched } = useFormikContext ();
+    const { setFieldTouched, setFieldValue, errors, touched, values } = useFormikContext ();
 
     return (
 
         <>
-            <AppTextInput onBlur = {() => setFieldTouched (nome)} onChangeText = {handleChange (nome)} {...altreProps} />
+            <AppTextInput onBlur = {() => setFieldTouched (nome)} onChangeText = {(text) => setFieldValue (nome, text)} value = {values [nome]} {...altreProps} />
             <MessaggioErrore errore = {errors [nome]} visibile = {touched [nome]} />
         </>
 

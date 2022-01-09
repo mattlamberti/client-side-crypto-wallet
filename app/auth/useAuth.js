@@ -11,6 +11,7 @@ export default useAuth = () => {
     const accedi = (authToken) => {
 
         const utente = jwtDecode (authToken);
+
         setUtente (utente);
         authStorage.salvaToken (authToken);
 

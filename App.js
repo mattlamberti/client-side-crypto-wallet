@@ -17,13 +17,12 @@ export default function App () {
     const ripristinaUtente = async () => {
 
         const utente = await authStorage.leggiUtente ();
+
         if (utente) setUtente (utente);
 
     };
 
     if (!pronto) return (<AppLoading startAsync = {ripristinaUtente} onError = {(error) => console.log (error)} onFinish = {() => setPronto (true)} />);
-
-    console.log (utente);
 
     return (
 

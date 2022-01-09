@@ -1,59 +1,145 @@
-import React, { useEffect } from "react";
-import { FlatList, StyleSheet } from "react-native";
+import React, { useState, useEffect } from "react";
+import { Button, FlatList, StyleSheet } from "react-native";
 
-import ActivityIndicator from "../components/ActivityIndicator";
-import Button from "../components/Button";
-import Card from "../components/Card";
-import colors from "../config/colors";
-import listingsApi from "../api/listings";
-import routes from "../navigation/routes";
 import Screen from "../components/Screen";
-import AppText from "../components/Text";
-import useApi from "../hooks/useApi";
+import AppText from "../components/AppText";
+import apiWallet from "../api/wallet";
+import authStorage from "../auth/storage";
+import apiCrypto from "../api/crypto";
+import colori from "../config/colori";
+import IndicatoreAttivita from "../components/IndicatoreAttivita";
+import { EliminaItemLista, Lista, SeparatoreItemLista } from "../components/liste";
 
-function SchermataCrypto ({ navigation }) {
+function SchermataCrypto () {
 
-    const getListingsApi = useApi (listingsApi.getListings);
+    const [cryptos, setCryptos] = useState ([]);
+    const [errore, setErrore] = useState (false);
+    const [refreshing, setRefreshing] = useState (false);
+    const [caricamento, setCaricamento] = useState (false);
+    const [totale, setTotale] = useState ("$ ");
 
     useEffect (() => {
-        getListingsApi.request();
+
+        caricaCrypto ();
+
     }, []);
 
+    useEffect (() => {
+
+        calcolaTotale ();
+
+    });
+
+    const calcolaTotale = () => {
+
+        let totale_posseduto = 0;
+
+        for (let i = 0; i < cryptos.length; i++) {
+
+            totale_posseduto += parseFloat (cryptos [i].totale);
+
+        }
+
+        setTotale (totale_posseduto.toFixed (2));
+
+    };
+
+    const caricaCrypto = async () => {
+
+        setCaricamento (true);
+
+        try {
+
+            const { _id } = await authStorage.leggiUtente ();
+            const risposta = await apiWallet.leggiCrypto (_id);
+
+            for (let i = 0; i < risposta.data.length; i++) {
+
+                let dati = await apiCrypto.crypto (risposta.data [i]["simbolo"]);
+
+                risposta.data [i]["prezzo"] = dati.data ["data"][Object.keys (dati.data ["data"])[0]]["quote"]["USD"]["price"];
+                risposta.data [i]["id"] = dati.data ["data"][Object.keys (dati.data ["data"])[0]]["id"];
+                risposta.data [i]["totale"] = ((risposta.data [i]["prezzo"] * risposta.data [i]["quantita"]) - (risposta.data [i]["prezzoPerUnita"] * risposta.data [i]["quantita"])).toFixed (2);
+
+            }
+
+            setCryptos (risposta.data);
+
+        } catch (error) {
+
+            alert ("Impossibile caricare le crypto.");
+            
+        } finally {
+
+            setCaricamento (false);
+
+        }
+
+    };
+
+    const eliminaCrypto = async (crypto) => {
+
+        setCaricamento (true);
+
+        try {
+
+            const { _id } = await authStorage.leggiUtente ();
+            await apiWallet.eliminaCrypto (_id, crypto.simbolo);
+
+            setCryptos (cryptos.filter ((m) => m._id !== crypto._id));
+            
+        } catch (error) {
+
+            alert ("Impossibile caricare le crypto.");
+            
+        } finally {
+
+            setCaricamento (false);
+
+        }
+
+    };
+
     return (
-    <>
-      <ActivityIndicator visible={getListingsApi.loading} />
-      <Screen style={styles.screen}>
-        {getListingsApi.error && (
-          <>
-            <AppText>Couldn't retrieve the listings.</AppText>
-            <Button title="Retry" onPress={getListingsApi.request} />
-          </>
-        )}
-        <FlatList
-          data={getListingsApi.data}
-          keyExtractor={(listing) => listing.id.toString()}
-          renderItem={({ item }) => (
-            <Card
-              title={item.title}
-              subTitle={"$" + item.price}
-              imageUrl={item.images[0].url}
-              onPress={() => navigation.navigate(routes.LISTING_DETAILS, item)}
-              thumbnailUrl={item.images[0].thumbnailUrl}
-            />
-          )}
-        />
-      </Screen>
-    </>
+
+        <Screen style = {styles.screen}>
+            {errore && (
+                <>
+                    <AppText>Impossibile caricare le crypto.</AppText>
+                    <Button title = "Riprova" onPress = {caricaCrypto} />
+                </>
+            )}
+            <IndicatoreAttivita visibile = {caricamento} />
+            <Lista stile = {styles.titolo} titolo = {"Totale:"} sottotitolo = {"$ " + totale} />
+            <FlatList style = {styles.flatList} data = {cryptos} keyExtractor = {(crypto) => { crypto.simbolo }} renderItem = {({ item }) => (
+                <Lista titolo = {item.nome} sottotitolo = {"$ " + item.totale} immagine = {"https://s2.coinmarketcap.com/static/img/coins/128x128/" + item.id + ".png"} onPress = {() => console.log ("Crypto selezionata", item)} swipeDestra = {() => (
+                    <EliminaItemLista onPress={() => {eliminaCrypto (item);}} />
+                )}
+                />
+            )} ItemSeparatorComponent = {SeparatoreItemLista} refreshing = {refreshing} onRefresh = {() => { caricaCrypto (); }} />
+        </Screen>
+
     );
 
 }
 
 const styles = StyleSheet.create ({
 
+    flatList: {
+
+        marginTop: 20
+
+    },
     screen: {
 
-        padding: 20,
-        backgroundColor: colors.light
+        flex: 1,
+        backgroundColor: colori.light
+
+    },
+    titolo: {
+
+        justifyContent: "center",
+        fontWeight: "bold"
 
     }
 

@@ -1,13 +1,16 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import AppText from "../components/AppText";
+
+import SchermataCrypto from "../screens/SchermataCrypto";
 
 const Stack = createStackNavigator ();
 
 const NavigatoreCrypto = () => (
-  <Stack.Navigator mode = "modal" screenOptions = {{ headerShown: false }}>
-    <Stack.Screen name = "Listings" component = {AppText} />
-  </Stack.Navigator>
+
+    <Stack.Navigator presentation = "modal" screenOptions = {{ headerShown: false }}>
+        <Stack.Screen name = "Cryptos" component = {SchermataCrypto} />
+    </Stack.Navigator>
+
 );
 
 export default NavigatoreCrypto;
