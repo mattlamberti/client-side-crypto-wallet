@@ -13,7 +13,6 @@ import { EliminaItemLista, Lista, SeparatoreItemLista } from "../components/list
 function SchermataCrypto () {
 
     const [cryptos, setCryptos] = useState ([]);
-    const [errore, setErrore] = useState (false);
     const [refreshing, setRefreshing] = useState (false);
     const [caricamento, setCaricamento] = useState (false);
     const [totale, setTotale] = useState ("$ ");
@@ -86,11 +85,11 @@ function SchermataCrypto () {
             const { _id } = await authStorage.leggiUtente ();
             await apiWallet.eliminaCrypto (_id, crypto.simbolo);
 
-            setCryptos (cryptos.filter ((m) => m._id !== crypto._id));
+            setCryptos (cryptos.filter ((c) => c._id !== crypto._id));
             
         } catch (error) {
 
-            alert ("Impossibile caricare le crypto.");
+            alert ("Impossibile eliminare la crypto dal wallet. Ricarica e riprova.");
             
         } finally {
 
@@ -103,12 +102,6 @@ function SchermataCrypto () {
     return (
 
         <Screen style = {styles.screen}>
-            {errore && (
-                <>
-                    <AppText>Impossibile caricare le crypto.</AppText>
-                    <Button title = "Riprova" onPress = {caricaCrypto} />
-                </>
-            )}
             <IndicatoreAttivita visibile = {caricamento} />
             <Lista stile = {styles.titolo} titolo = {"Totale:"} sottotitolo = {"$ " + totale} />
             <FlatList style = {styles.flatList} data = {cryptos} keyExtractor = {(crypto) => { crypto.simbolo }} renderItem = {({ item }) => (
