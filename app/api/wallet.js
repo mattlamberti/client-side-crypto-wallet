@@ -1,7 +1,7 @@
 import { create } from "apisauce";
 import authStorage from "../auth/storage";
 
-const apiClient = create ({ baseURL: "https://prova-progetto-psss.herokuapp.com/api" });
+const apiClient = create ({ baseURL: "https://crypto-wallet-progetto-psss.herokuapp.com/api" });
 
 apiClient.addAsyncRequestTransform (async (request) => {
 

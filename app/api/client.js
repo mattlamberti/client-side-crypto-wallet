@@ -4,7 +4,7 @@ import authStorage from "../auth/storage";
 
 const apiClient = create ({
 
-    baseURL: "https://prova-progetto-psss.herokuapp.com/api"
+    baseURL: "https://crypto-wallet-progetto-psss.com/api"
 
 });
 
